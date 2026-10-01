@@ -1,0 +1,15 @@
+schema_version: 29
+dns:
+  bind_hosts:
+    - 0.0.0.0
+  port: 5553
+  upstream_dns:
+    - 223.5.5.5
+    - 119.29.29.29
+  fastest_addr: true
+  cache_size: 4194304
+  cache_ttl_min: 0
+  cache_ttl_max: 0
+  cache_optimistic: true
+http:
+  address: 0.0.0.0:3000

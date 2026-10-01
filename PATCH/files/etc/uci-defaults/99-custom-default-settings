@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# ==============================================================================
+# 行业标准初始化脚本 (First-Boot Initialization)
+# 首次刷机启动时由系统自动执行一次，执行完毕后自动销毁
+# ==============================================================================
+
+# 1. AdGuardHome 标准端口预设 (避让系统 53 端口)
+if [ -f /etc/config/adguardhome ]; then
+    uci -q batch <<EOF
+set adguardhome.config.enabled='1'
+set adguardhome.config.port='5553'
+set adguardhome.config.httpport='3000'
+commit adguardhome
+EOF
+fi
+
+# 检查可能存在的 AdGuardHome yaml 配置文件，确保其监听 5553
+for yaml_file in /etc/adguardhome.yaml /etc/adguardhome/adguardhome.yaml /etc/adguardhome/AdGuardHome.yaml; do
+    if [ -f "$yaml_file" ]; then
+        sed -i 's/port: 53\b/port: 5553/g' "$yaml_file"
+    fi
+done
+
+# 2. Docker 数据根目录标准化与独立存储路径准备
+# 预设数据存储在 /opt/docker (独立数据分区推荐路径)
+mkdir -p /opt/docker
+
+if [ -f /etc/config/dockerman ]; then
+    uci -q batch <<EOF
+set dockerman.dockerman.data_root='/opt/docker'
+commit dockerman
+EOF
+fi
+
+exit 0
