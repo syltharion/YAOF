@@ -161,6 +161,8 @@ rm -rf feeds/luci/applications/{luci-app-frps,luci-app-frpc,luci-app-zerotier}
 rm -rf feeds/packages/utils/coremark
 sed -i 's/+@KERNEL_DEBUG_INFO_BTF/+vmlinux-btf/' ./package/new/openwrt-einat-ebpf/Makefile
 git clone https://github.com/QiuSimons/vmlinux-btf ./package/new/vmlinux-btf
+# 添加适配 25.12 apk 与 nftables 的 AdGuardHome 界面
+git clone --depth 1 https://github.com/w9315273/luci-app-adguardhome.git ./package/new/luci-app-adguardhome
 
 ### 获取额外的 LuCI 应用、主题和依赖 ###
 # RK
